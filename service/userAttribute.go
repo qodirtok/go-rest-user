@@ -28,6 +28,18 @@ func FindUserById(id uint) (UserAttribute, error) {
 
 }
 
+func FindUserByLoginId(id string) (UserAttribute, error) {
+	var user UserAttribute
+
+	err := model.Database.Where("id_login=?", id).Find(&user).Error
+
+	if err != nil {
+		return UserAttribute{}, nil
+	}
+
+	return user, nil
+}
+
 func Update(data *UserAttribute) (err error) {
 	model.Database.Save(&data)
 	return nil

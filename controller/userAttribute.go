@@ -44,14 +44,6 @@ func GetAll(c *gin.Context) {
 	} else {
 		c.JSON(http.StatusOK, gin.H{"msg": "success", "data": userAll})
 	}
-
-	// getUserAll, err := service.GetAllUser()
-
-	// if err != nil {
-	// 	c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
-	// }
-
-	// c.JSON(http.StatusOK, gin.H{"msg": "success", "data": getUserAll})
 }
 
 func GetById(c *gin.Context) {
@@ -71,6 +63,22 @@ func GetById(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"msg": "success", "data": userId})
 
+}
+
+func GetByLoginid(c *gin.Context) {
+	var input service.UserAttribute
+
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusOK, gin.H{"msg": err.Error()})
+	}
+
+	user, err := service.FindUserByLoginId(input.Id_login)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"msg": err.Error()})
+	}
+
+	c.JSON(http.StatusOK, gin.H{"msg": "success", "data": user})
 }
 
 func UpdateUser(c *gin.Context) {
